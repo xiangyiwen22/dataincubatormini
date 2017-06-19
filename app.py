@@ -7,6 +7,12 @@ from bokeh.embed import components
 
 app = Flask(__name__) #root path
 
+
+
+@app.route('/')
+def index():
+  return render_template('index.html')
+
 @app.route('/result', methods=['POST']) # home page
 def result():
   ticker=request.form['dataset_code']
@@ -30,10 +36,6 @@ def result():
     return render_template('result.html', script=script, div=div)
   #return render_template('result.html', result=df)
   #return render_template('result.html', result=df)
-
-@app.route('/')
-def index():
-  return render_template('index.html')
-
+  
 if __name__ == '__main__':
-  app.run()
+  app.run(port=33507)
