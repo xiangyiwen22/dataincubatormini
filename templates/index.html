@@ -2,14 +2,26 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Yiwen Xiang</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<title>Tiny Project_YX</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"> 
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</head>
 	<body>
 		<div>
-  			<h1>Yiwen Xiang Clustering Project</h1>
+  			<h1>Stock price from Quandl</h1>
 		</div>
+		<form id="input" method="POST" action="/result">
+			<p>
+			Please input a ticker:<input type="text" name="dataset_code">
+			</p>
+			<p>
+				<input type="checkbox" name="Close" value="Close"> Closing price
+				<br>
+				<input type="checkbox" name="Open" value="Open"> Opening price
+				<br>
+			</p>
+			<input type="submit">
+		</form>
 	</body>
 </html>
