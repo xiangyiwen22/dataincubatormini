@@ -1,4 +1,10 @@
-# Flask on Heroku
+
+
+# You should be able to see my site at 'https://tdi-milestone-yx.herokuapp.com/'
+ 
+  
+# Flask on Heroku Instructions
+
 
 This project is intended to help you tie together some important concepts and
 technologies from the 12-day course, including Git, Flask, JSON, Pandas,
