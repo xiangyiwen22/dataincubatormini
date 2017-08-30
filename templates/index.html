@@ -8,20 +8,22 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<div>
+		<div class=page>
   			<h1>Stock price from Quandl</h1>
 		</div>
+		
 		<form id="input" method="POST" action="/result">
 			<p>
-			Please input a ticker:<input type="text" name="dataset_code">
+			Please input a ticker, e.g. GOOG<input type="text" name="dataset_code">
 			</p>
 			<p>
-				<input type="checkbox" name="Close" value="Close"> Closing price
+				<input type="checkbox" name="check" value="close"> Closing price
 				<br>
-				<input type="checkbox" name="Open" value="Open"> Opening price
+				<input type="checkbox" name="check" value="open"> Opening price
 				<br>
-			</p>
 			<input type="submit">
+			</p>
 		</form>
+
 	</body>
 </html>

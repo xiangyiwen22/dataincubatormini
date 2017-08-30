@@ -5,6 +5,27 @@ import pandas as pd
 from bokeh.charts import TimeSeries, show, output_file
 from bokeh.embed import components 
 
+from bokeh.plotting import figure
+from bokeh.models import ColumnDataSource
+from datetime import datetime
+
+def showplot(htmlinput, showdata, ticker):
+    p = figure(x_axis_type="datetime")
+    color={'open':'black',
+           'close':'blue'}
+    p.title.text = 'Quandl WIKI ' + ticker + ' stock price'
+    #p.legend.location = "bottom"
+    p.grid.grid_line_alpha=0
+    p.xaxis.axis_label = 'Date'
+    p.yaxis.axis_label = 'Price'
+    p.ygrid.band_fill_color="olive"
+    p.ygrid.band_fill_alpha = 0.1
+    for i in htmlinput:
+        p.line(showdata['date'], showdata[i], legend=i, line_color=color[i])
+    p.legend.location = "top_left"
+    return p
+    
+
 app = Flask(__name__) #root path
 
 
@@ -15,27 +36,24 @@ def index():
 
 @app.route('/result', methods=['POST']) # home page
 def result():
+  #ticker=request.form['dataset_code']
+  htmlinput=request.form.getlist('check')
   ticker=request.form['dataset_code']
   r=requests.get('https://www.quandl.com/api/v3/datasets/WIKI/'+ticker+'.json?api_key=tBXpG5nLBevqCdXXFi1U')
   json_object=r.json()
-  close_data, open_data, date_data=[],[],[]
   data=json_object['dataset']['data']
+  showdata = {"date": [], "open": [], "close": []}
+  #showdata = {"date": [], "open": []}
   for arr in data:
-    date_data.append(arr[0])
-    open_data.append(arr[1])
-    close_data.append(arr[4])
-  if request.form.getlist('Close'):
-    d=pd.DataFrame(dict(Date=date_data, Price=close_data))
-    pp1 = TimeSeries(d, x='Date',title="close price",ylabel='Stock Prices')
-    script,div=components(pp1)
-    return render_template('result.html', script=script, div=div)
-  if request.form.getlist('Open'):
-    d=pd.DataFrame(dict(Date=date_data, Price=open_data))
-    pp2 = TimeSeries(d, x='Date',title="open price",ylabel='Stock Prices')
-    script,div=components(pp2)
-    return render_template('result.html', script=script, div=div)
-  #return render_template('result.html', result=df)
-  #return render_template('result.html', result=df)
+      showdata['date'].append(datetime.strptime(arr[0], '%Y-%m-%d'))
+      showdata['open'].append(arr[1])
+      showdata['close'].append(arr[4])
+  #htmlinput=['open','close']
+  plot=showplot(htmlinput, showdata, ticker)
+  script,div=components(plot)
+  print htmlinput
+  return render_template('result.html', script=script, div=div)
+
   
 if __name__ == '__main__':
-  app.run(port=33507)
+  app.run(port=33507, debug=True, use_reloader=False)
