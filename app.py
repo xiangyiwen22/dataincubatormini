@@ -8,23 +8,30 @@ from bokeh.embed import components
 from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource
 from datetime import datetime
+from bokeh.palettes import Spectral4
+
 
 def showplot(htmlinput, showdata, ticker):
-    p = figure(x_axis_type="datetime")
-    color={'open':'green',
-           'high':'blue',
-           'low':'orange',
-           'close':'red'}
-    p.title.text = 'Quandl WIKI ' + ticker + ' stock price'
+    p = figure(plot_width=800, plot_height=500, x_axis_type="datetime")
+    color={'open':Spectral4[0],
+           'high':Spectral4[1],
+           'low':Spectral4[2],
+           'close':Spectral4[3]}
+    p.title.text = 'Quandl WIKI %s stock price(click on legend entries to hide the corresponding lines)'%ticker
     #p.legend.location = "bottom"
     p.grid.grid_line_alpha=0
     p.xaxis.axis_label = 'Time'
     p.yaxis.axis_label = 'Price'
     p.ygrid.band_fill_color="olive"
-    p.ygrid.band_fill_alpha = 0.1
+    p.ygrid.band_fill_alpha = .2
+    #p.xgrid.band_fill_alpha = 1
     for i in htmlinput:
-        p.line(showdata['date'], showdata[i], legend=i, line_color=color[i])
+        p.line(showdata['date'], showdata[i], legend=i, 
+                                              alpha=0.8,
+                                              line_width=2, 
+                                              line_color=color[i])
     p.legend.location = "top_left"
+    p.legend.click_policy="hide"
     return p
     
 
