@@ -16,7 +16,7 @@ def create_hover_tool():
     """Generates the HTML for the Bokeh's hover data tool on our graph."""
     hover_html = """
       <div>
-        <span class="hover-tooltip">$y{0.00}</span>
+        <span class="hover-tooltip">$ $y{0.00}</span>
       </div>
     """
     return HoverTool(tooltips=hover_html)
@@ -73,7 +73,7 @@ def result():
       showdata['high'].append(arr[2])
       showdata['low'].append(arr[3])
       showdata['close'].append(arr[4])
-  showdata['time']=[x.strftime("%Y-%m-%d") for x in showdata['date']]
+  #showdata['time']=[x.strftime("%Y-%m-%d") for x in showdata['date']]
   hover = create_hover_tool()#
   plot=showplot(htmlinput, showdata, ticker, hover_tool=hover)
   script,div=components(plot)
