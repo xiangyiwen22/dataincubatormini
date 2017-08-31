@@ -10,9 +10,23 @@ from bokeh.models import ColumnDataSource
 from datetime import datetime
 from bokeh.palettes import Spectral4
 
+from bokeh.models import (HoverTool, FactorRange, Plot, LinearAxis, Grid,
+                          Range1d) #
+def create_hover_tool():
+    """Generates the HTML for the Bokeh's hover data tool on our graph."""
+    hover_html = """
+      <div>
+        <span class="hover-tooltip">$y{0.00}</span>
+      </div>
+    """
+    return HoverTool(tooltips=hover_html)
 
-def showplot(htmlinput, showdata, ticker):
-    p = figure(plot_width=800, plot_height=500, x_axis_type="datetime")
+
+def showplot(htmlinput, showdata, ticker, hover_tool=None):
+    tools = []
+    if hover_tool:
+        tools = [hover_tool,]
+    p = figure(plot_width=800, plot_height=500, x_axis_type="datetime", tools=tools)
     color={'open':Spectral4[0],
            'high':Spectral4[1],
            'low':Spectral4[2],
@@ -59,9 +73,9 @@ def result():
       showdata['high'].append(arr[2])
       showdata['low'].append(arr[3])
       showdata['close'].append(arr[4])
-      #showdata['volume'].append(arr[5])
-  #htmlinput=['open','close']
-  plot=showplot(htmlinput, showdata, ticker)
+  showdata['time']=[x.strftime("%Y-%m-%d") for x in showdata['date']]
+  hover = create_hover_tool()#
+  plot=showplot(htmlinput, showdata, ticker, hover_tool=hover)
   script,div=components(plot)
   print htmlinput
   return render_template('result.html', script=script, div=div)
